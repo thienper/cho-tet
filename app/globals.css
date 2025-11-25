@@ -359,7 +359,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.575) 0%, rgba(212, 32, 44, 0.473) 50%, rgba(139, 0, 0, 0.521) 100%);
+    background: linear-gradient(135deg, rgba(139, 0, 0, 0.301) 0%, rgba(212, 32, 44, 0.473) 50%, rgba(139, 0, 0, 0.521) 100%);
 }
 
 .hero-banner::after {
@@ -1872,7 +1872,7 @@ body {
     }
 
     .hero-banner::before {
-        background: linear-gradient(135deg, rgba(139, 0, 0, 0.575) 0%, rgba(212, 32, 44, 0.473) 50%, rgba(139, 0, 0, 0.521) 100%);
+        background: linear-gradient(135deg, rgba(139, 0, 0, 0.301) 0%, rgba(212, 32, 44, 0.473) 50%, rgba(139, 0, 0, 0.521) 100%);
     }
 
     .hero-title {
@@ -2355,7 +2355,7 @@ body {
     }
 
     .hero-banner::before {
-        background: linear-gradient(135deg, rgba(139, 0, 0, 0.575) 0%, rgba(212, 32, 44, 0.473) 50%, rgba(139, 0, 0, 0.521) 100%);
+        background: linear-gradient(135deg, rgba(139, 0, 0, 0.301) 0%, rgba(212, 32, 44, 0.473) 50%, rgba(139, 0, 0, 0.521) 100%);
     }
 
     .hero-title {

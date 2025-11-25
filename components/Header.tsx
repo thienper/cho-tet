@@ -91,10 +91,6 @@ export default function Header() {
 
     return (
         <header className="header-tet">
-            <div className="header-top">
-                <div className="lantern lantern-left"></div>
-                <div className="lantern lantern-right"></div>
-            </div>
 
             <div className="container">
                 <div className="header-content">
