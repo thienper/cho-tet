@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface ProductCardProps {
-    product: IProduct & { category: { name: string } };
+    product: IProduct & { category?: { name: string } | string };
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
 
             <div className="product-info">
-                <div className="product-category">{product.category?.name || 'Chưa phân loại'}</div>
+                <div className="product-category">{typeof product.category === 'object' ? product.category?.name : 'Chưa phân loại'}</div>
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-desc">{product.description.substring(0, 80)}...</p>
 

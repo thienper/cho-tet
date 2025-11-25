@@ -3,12 +3,19 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
+import { IProduct } from '@/models/Product';
 import { useEffect, useState } from 'react';
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
 export default function Home() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -102,7 +109,10 @@ export default function Home() {
             <>
               <div className="products-grid">
                 {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
+                  <ProductCard
+                    key={product._id}
+                    product={product as IProduct & { category?: { name: string } | string }}
+                  />
                 ))}
               </div>
 

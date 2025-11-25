@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { FaHeart, FaSearch } from 'react-icons/fa';
@@ -127,9 +128,11 @@ export default function Header() {
                                                 className="suggestion-item"
                                                 onClick={() => handleSuggestionClick(product._id)}
                                             >
-                                                <img
-                                                    src={product.images?.[0]}
+                                                <Image
+                                                    src={product.images?.[0] || '/placeholder.jpg'}
                                                     alt={product.name}
+                                                    width={80}
+                                                    height={80}
                                                     className="suggestion-image"
                                                 />
                                                 <div className="suggestion-info">
