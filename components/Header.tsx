@@ -135,7 +135,7 @@ export default function Header() {
                                                 <div className="suggestion-info">
                                                     <div className="suggestion-name">{product.name}</div>
                                                     <div className="suggestion-details">
-                                                        <span className="suggestion-category">{product.category?.name}</span>
+                                                        <span className="suggestion-category">{typeof product.category === 'object' ? product.category?.name : product.category}</span>
                                                         <span className="suggestion-price">
                                                             {formatPrice(product.price, product.discount)}
                                                         </span>
