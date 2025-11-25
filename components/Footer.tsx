@@ -55,7 +55,7 @@ export default function Footer() {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; 2025 Tết Market. Chúc mừng năm mới - Vạn sự như ý!</p>
+                    <p>&copy; 2026 Tết Market. Chúc mừng năm mới - Vạn sự như ý!</p>
                 </div>
             </div>
         </footer>

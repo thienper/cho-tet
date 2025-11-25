@@ -14,7 +14,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Tết Market - Chợ Tết Online 2025",
+  title: "Tết Market - Chợ Tết Online 2026",
   description: "Mua sắm hàng Tết chất lượng cao, giá tốt nhất",
 };
 

@@ -21,7 +21,7 @@ export default function ProductDetail() {
             const data = await res.json();
             if (data.success) {
                 setProduct(data.data);
-                setSelectedImage(data.data.image);
+                setSelectedImage(data.data.images?.[0]);
             }
         } catch (error) {
             console.error('Error fetching product:', error);

@@ -10,11 +10,17 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
     fetchProducts();
-  }, [selectedCategory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory, currentPage]);
 
   const fetchCategories = async () => {
     try {
@@ -31,19 +37,26 @@ export default function Home() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const url = selectedCategory
-        ? `/api/products?category=${selectedCategory}`
-        : '/api/products';
+      let url = `/api/products?page=${currentPage}&limit=20`;
+      if (selectedCategory) {
+        url += `&category=${selectedCategory}`;
+      }
       const res = await fetch(url);
       const data = await res.json();
       if (data.success) {
         setProducts(data.data);
+        setTotalPages(data.pagination.totalPages);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCategoryChange = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setCurrentPage(1); // Reset về trang 1 khi đổi category
   };
 
   return (
@@ -53,7 +66,7 @@ export default function Home() {
       <main className="main-content">
         <div className="hero-banner">
           <div className="container">
-            <h1 className="hero-title">🎊 Chào Đón Xuân 2025 🎊</h1>
+            <h1 className="hero-title">🎊 Chào Đón Xuân 2026 🎊</h1>
             <p className="hero-subtitle">Mua sắm hàng Tết - Rước lộc về nhà</p>
           </div>
         </div>
@@ -63,7 +76,7 @@ export default function Home() {
           <div className="category-filter">
             <button
               className={`category-btn ${!selectedCategory ? 'active' : ''}`}
-              onClick={() => setSelectedCategory('')}
+              onClick={() => handleCategoryChange('')}
             >
               Tất cả
             </button>
@@ -71,7 +84,7 @@ export default function Home() {
               <button
                 key={cat._id}
                 className={`category-btn ${selectedCategory === cat._id ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat._id)}
+                onClick={() => handleCategoryChange(cat._id)}
               >
                 {cat.name}
               </button>
@@ -86,11 +99,42 @@ export default function Home() {
               <p>Chưa có sản phẩm nào</p>
             </div>
           ) : (
-            <div className="products-grid">
-              {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
+            <>
+              <div className="products-grid">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    className="pagination-btn"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                    disabled={currentPage === 1}
+                  >
+                    ← Trang trước
+                  </button>
+
+                  <div className="pagination-info">
+                    Trang {currentPage} / {totalPages}
+                  </div>
+
+                  <button
+                    className="pagination-btn"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                    disabled={currentPage === totalPages}
+                  >
+                    Trang sau →
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>

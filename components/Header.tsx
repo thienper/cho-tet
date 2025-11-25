@@ -4,15 +4,22 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { FaHeart, FaSearch } from 'react-icons/fa';
 
+interface Category {
+    _id: string;
+    name: string;
+    slug: string;
+}
+
 interface Product {
     _id: string;
     name: string;
+    slug: string;
+    description: string;
     price: number;
-    discount?: number;
-    image: string;
-    category: {
-        name: string;
-    };
+    discount: number;
+    images?: string[];
+    category: Category | string;
+    stock: number;
 }
 
 export default function Header() {
@@ -93,8 +100,7 @@ export default function Header() {
                 <div className="header-content">
                     <Link href="/" className="logo">
                         <div className="logo-tet">
-                            <span className="logo-text">🧧 Tết Market</span>
-                            <span className="logo-subtitle">Chợ Tết 2025</span>
+                            <span className="logo-text">🧧 Chợ tết</span>
                         </div>
                     </Link>
 
@@ -126,7 +132,7 @@ export default function Header() {
                                                 onClick={() => handleSuggestionClick(product._id)}
                                             >
                                                 <img
-                                                    src={product.image}
+                                                    src={product.images?.[0]}
                                                     alt={product.name}
                                                     className="suggestion-image"
                                                 />

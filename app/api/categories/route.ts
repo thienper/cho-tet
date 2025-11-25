@@ -1,3 +1,4 @@
+import { verifyUserToken } from '@/lib/authHelper';
 import connectDB from '@/lib/mongodb';
 import Category from '@/models/Category';
 import { NextRequest, NextResponse } from 'next/server';
@@ -19,6 +20,15 @@ export async function GET() {
 // POST create new category
 export async function POST(request: NextRequest) {
     try {
+        // Verify token
+        const auth = verifyUserToken(request);
+        if (!auth) {
+            return NextResponse.json(
+                { success: false, error: 'Chưa đăng nhập' },
+                { status: 401 }
+            );
+        }
+
         await connectDB();
         const body = await request.json();
 

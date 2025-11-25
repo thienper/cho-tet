@@ -1,3 +1,4 @@
+import { verifyUserToken } from '@/lib/authHelper';
 import connectDB from '@/lib/mongodb';
 import Category from '@/models/Category';
 import { NextRequest, NextResponse } from 'next/server';
@@ -34,6 +35,15 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // Verify token
+        const auth = verifyUserToken(request);
+        if (!auth) {
+            return NextResponse.json(
+                { success: false, error: 'Chưa đăng nhập' },
+                { status: 401 }
+            );
+        }
+
         await connectDB();
         const body = await request.json();
         const { id } = await params;
@@ -65,6 +75,15 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // Verify token
+        const auth = verifyUserToken(request);
+        if (!auth) {
+            return NextResponse.json(
+                { success: false, error: 'Chưa đăng nhập' },
+                { status: 401 }
+            );
+        }
+
         await connectDB();
         const { id } = await params;
         const category = await Category.findByIdAndDelete(id);

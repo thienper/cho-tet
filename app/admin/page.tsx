@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { FaEdit, FaPlus, FaTrash, FaUpload } from 'react-icons/fa';
 import { toast, Toaster } from 'sonner';
@@ -18,18 +19,20 @@ interface Product {
     description: string;
     price: number;
     discount: number;
-    image: string;
     images?: string[];
     category: Category | string;
     stock: number;
 }
 
 export default function AdminProducts() {
+    const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [uploading, setUploading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 12;
     const [formData, setFormData] = useState({
         name: '',
         slug: '',
@@ -215,12 +218,22 @@ export default function AdminProducts() {
             description: product.description,
             price: product.price,
             discount: product.discount || 0,
-            image: product.image,
+            image: product.images?.[0] || '',
             images: product.images || [],
             category: categoryId,
             stock: product.stock,
         });
         setShowForm(true);
+    };
+
+    const getPaginatedProducts = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return products.slice(startIndex, endIndex);
+    };
+
+    const getTotalPages = () => {
+        return Math.ceil(products.length / itemsPerPage);
     };
 
     const resetForm = () => {
@@ -246,18 +259,31 @@ export default function AdminProducts() {
         }).format(price);
     };
 
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            toast.success('Đăng xuất thành công');
+            window.location.href = '/admin/login';
+        } catch (error) {
+            console.error('Logout error:', error);
+            toast.error('Lỗi đăng xuất');
+        }
+    };
+
     return (
         <>
             <Toaster position="top-right" richColors />
             <div className="admin-content">
                 <div className="admin-header">
                     <h1>Quản Lý Sản Phẩm</h1>
-                    <button
-                        className="btn-primary"
-                        onClick={() => setShowForm(true)}
-                    >
-                        <FaPlus /> Thêm Sản Phẩm
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            className="btn-primary"
+                            onClick={() => setShowForm(true)}
+                        >
+                            <FaPlus /> Thêm Sản Phẩm
+                        </button>
+                    </div>
                 </div>
 
                 {showForm && (
@@ -449,10 +475,10 @@ export default function AdminProducts() {
                                     </td>
                                 </tr>
                             ) : (
-                                products.map((product) => (
+                                getPaginatedProducts().map((product) => (
                                     <tr key={product._id}>
                                         <td>
-                                            <Image src={product.image} alt={product.name} width={60} height={60} className="table-image" />
+                                            <Image src={product.images?.[0] || '/placeholder.jpg'} alt={product.name} width={60} height={60} className="table-image" />
                                         </td>
                                         <td>{product.name}</td>
                                         <td>{typeof product.category === 'object' ? product.category.name : 'N/A'}</td>
@@ -480,6 +506,27 @@ export default function AdminProducts() {
                             )}
                         </tbody>
                     </table>
+                    {products.length > 0 && (
+                        <div className="pagination">
+                            <button
+                                className="pagination-btn"
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                disabled={currentPage === 1}
+                            >
+                                ← Trước
+                            </button>
+                            <div className="pagination-info">
+                                Trang {currentPage} / {getTotalPages()}
+                            </div>
+                            <button
+                                className="pagination-btn"
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, getTotalPages()))}
+                                disabled={currentPage === getTotalPages()}
+                            >
+                                Tiếp →
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

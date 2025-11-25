@@ -44,10 +44,6 @@ const ProductSchema = new mongoose.Schema<IProduct>(
             min: 0,
             max: 100,
         },
-        image: {
-            type: String,
-            required: [true, 'Vui lòng thêm hình ảnh sản phẩm'],
-        },
         images: [
             {
                 type: String,

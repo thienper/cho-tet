@@ -82,7 +82,7 @@ export default function Favorites() {
                                         <div key={item._id} className="cart-item">
                                             <div className="cart-item-image">
                                                 <Image
-                                                    src={item.image || '/placeholder.jpg'}
+                                                    src={item.images?.[0] || '/placeholder.jpg'}
                                                     alt={item.name}
                                                     width={100}
                                                     height={100}
