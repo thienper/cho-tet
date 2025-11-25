@@ -341,8 +341,8 @@ export default function AdminProducts() {
                                         <label>Giá (VNĐ) *</label>
                                         <input
                                             type="number"
-                                            value={formData.price}
-                                            onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                                            value={formData.price || ''}
+                                            onChange={(e) => setFormData({ ...formData, price: e.target.value ? Number(e.target.value) : 0 })}
                                             min="0"
                                             required
                                         />
@@ -352,8 +352,8 @@ export default function AdminProducts() {
                                         <label>Giảm giá (%)</label>
                                         <input
                                             type="number"
-                                            value={formData.discount}
-                                            onChange={(e) => setFormData({ ...formData, discount: Number(e.target.value) })}
+                                            value={formData.discount || ''}
+                                            onChange={(e) => setFormData({ ...formData, discount: e.target.value ? Number(e.target.value) : 0 })}
                                             min="0"
                                             max="100"
                                         />
@@ -433,8 +433,8 @@ export default function AdminProducts() {
                                         <label>Tồn kho *</label>
                                         <input
                                             type="number"
-                                            value={formData.stock}
-                                            onChange={(e) => setFormData({ ...formData, stock: Number(e.target.value) })}
+                                            value={formData.stock || ''}
+                                            onChange={(e) => setFormData({ ...formData, stock: e.target.value ? Number(e.target.value) : 0 })}
                                             min="0"
                                             required
                                         />

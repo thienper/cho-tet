@@ -2310,6 +2310,21 @@ body {
     .footer-section a {
         font-size: 13px;
     }
+
+    /* Mobile scroll hint for tables */
+    .admin-table::before {
+        content: '👉 Lướt qua bên phải để chỉnh sửa';
+        display: block;
+        background: #fff3cd;
+        color: #856404;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        border-left: 4px solid #ffc107;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2547,6 +2562,36 @@ body {
     .btn-delete {
         padding: 6px 10px;
         font-size: 12px;
+    }
+
+    .admin-main {
+        background: var(--bg-light);
+        padding: 0px;
+        overflow-y: auto;
+        align-items: center;
+    }
+
+    /* Mobile scroll hint for tables */
+    .admin-table::before {
+        content: '👉 Lướt qua bên phải để chỉnh sửa';
+        display: block;
+        background: #fff3cd;
+        color: #856404;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        border-left: 4px solid #ffc107;
+    }
+
+    .admin-table {
+        overflow-x: auto;
+    }
+
+    .admin-table table {
+        min-width: 700px;
     }
 }
 
