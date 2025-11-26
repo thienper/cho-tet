@@ -14,6 +14,8 @@ export default function ProductDetail() {
     const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState('');
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [lightboxZoom, setLightboxZoom] = useState(1);
 
     const fetchProduct = async () => {
         try {
@@ -53,6 +55,19 @@ export default function ProductDetail() {
             style: 'currency',
             currency: 'VND',
         }).format(price);
+    };
+
+    const handleZoomIn = () => {
+        setLightboxZoom(prev => Math.min(prev + 0.2, 3));
+    };
+
+    const handleZoomOut = () => {
+        setLightboxZoom(prev => Math.max(prev - 0.2, 1));
+    };
+
+    const handleCloseLightbox = () => {
+        setIsLightboxOpen(false);
+        setLightboxZoom(1);
     };
 
     if (loading) {
@@ -98,13 +113,14 @@ export default function ProductDetail() {
                 <div className="container">
                     <div className="product-detail-wrapper">
                         <div className="product-detail-images-section">
-                            <div className="product-detail-image">
+                            <div className="product-detail-image" onClick={() => setIsLightboxOpen(true)} style={{ cursor: 'pointer' }}>
                                 <Image
                                     src={selectedImage || product.image || '/placeholder.jpg'}
                                     alt={product.name}
                                     width={500}
                                     height={500}
                                     className="detail-image"
+                                    title="Click để phóng to"
                                 />
                             </div>
 
@@ -188,6 +204,30 @@ export default function ProductDetail() {
                     </div>
                 </div>
             </main>
+
+            {/* Lightbox Modal */}
+            {isLightboxOpen && (
+                <div className="lightbox-overlay" onClick={handleCloseLightbox}>
+                    <div className="lightbox-container" onClick={(e) => e.stopPropagation()}>
+                        <button className="lightbox-close" onClick={handleCloseLightbox}>✕</button>
+                        <div className="lightbox-controls">
+                            <button className="lightbox-btn" onClick={handleZoomOut}>−</button>
+                            <span className="lightbox-zoom">{Math.round(lightboxZoom * 100)}%</span>
+                            <button className="lightbox-btn" onClick={handleZoomIn}>+</button>
+                        </div>
+                        <div className="lightbox-image-wrapper">
+                            <Image
+                                src={selectedImage || product.image || '/placeholder.jpg'}
+                                alt={product.name}
+                                width={1000}
+                                height={1000}
+                                className="lightbox-image"
+                                style={{ transform: `scale(${lightboxZoom})` }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <Footer />
         </>
