@@ -203,7 +203,7 @@ export default function Favorites() {
                                     <p className="contact-note">Sao chép danh sách trên và gửi cho chúng tôi qua:</p>
                                     <div className="contact-buttons">
                                         <a
-                                            href="https://zalo.me/0123456789"
+                                            href="http://zaloapp.com/qr/p/kuhf5gyvg7sw"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="contact-btn zalo-btn"
@@ -211,7 +211,7 @@ export default function Favorites() {
                                             <SiZalo /> Zalo
                                         </a>
                                         <a
-                                            href="https://www.facebook.com/messages/t/yourpage"
+                                            href="https://m.me/thienperr"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="contact-btn messenger-btn"
@@ -219,7 +219,7 @@ export default function Favorites() {
                                             <SiMessenger /> Messenger
                                         </a>
                                         <a
-                                            href="https://www.facebook.com/yourpage"
+                                            href="https://www.facebook.com/thienperr"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="contact-btn facebook-btn"
@@ -227,7 +227,7 @@ export default function Favorites() {
                                             <FaFacebook /> Facebook
                                         </a>
                                         <a
-                                            href="tel:0123456789"
+                                            href="tel:0974122850"
                                             className="contact-btn phone-btn"
                                         >
                                             <FaPhone /> Gọi Điện
