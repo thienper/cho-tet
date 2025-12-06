@@ -25,6 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
+      <head>
+        <link rel="icon" href="https://e7.pngegg.com/pngimages/787/487/png-clipart-computer-icons-cost-service-hoa-mai-thumbnail.png" />
+        <link rel="apple-touch-icon" href="https://e7.pngegg.com/pngimages/787/487/png-clipart-computer-icons-cost-service-hoa-mai-thumbnail.png" />
+      </head>
       <body className={`${inter.variable} ${playfair.variable} antialiased`}>
         {children}
       </body>

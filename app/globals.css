@@ -600,7 +600,7 @@ body {
     border-radius: 25px;
     font-weight: 600;
     transition: all 0.3s;
-    margin-top: auto;
+    margin-top: 7px;
     height: 44px;
     line-height: 20px;
 }
@@ -2806,6 +2806,10 @@ body {
 
     .pagination-info {
         width: 100%;
+    }
+
+    .view-detail-btn {
+        margin-top: 7px;
     }
 }
 
