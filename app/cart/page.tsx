@@ -3,25 +3,59 @@
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaCopy, FaFacebook, FaPhone, FaTrash } from 'react-icons/fa';
 import { SiMessenger, SiZalo } from 'react-icons/si';
 import { toast, Toaster } from 'sonner';
 
 export default function Favorites() {
-    const [favorites, setFavorites] = useState<any[]>([]);
+    type FavoriteItem = {
+        _id: string;
+        name: string;
+        price: number;
+        discount?: number;
+        images?: string[];
+        quantity: number;
+    };
+    const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
 
     const loadFavorites = () => {
-        const favoritesData = JSON.parse(sessionStorage.getItem('favorites') || '[]');
+        const raw = sessionStorage.getItem('favorites') || '[]';
+        const parsed: Array<Partial<FavoriteItem>> = JSON.parse(raw);
+        const favoritesData: FavoriteItem[] = parsed.map((item) => ({
+            _id: String(item._id ?? ''),
+            name: String(item.name ?? ''),
+            price: Number(item.price ?? 0),
+            discount: typeof item.discount !== 'undefined' ? Number(item.discount) : undefined,
+            images: Array.isArray(item.images) ? item.images as string[] : undefined,
+            quantity: typeof item.quantity !== 'undefined' ? Math.max(1, Number(item.quantity)) : 1,
+        }));
         setFavorites(favoritesData);
+        sessionStorage.setItem('favorites', JSON.stringify(favoritesData));
     };
 
     useEffect(() => {
-        loadFavorites();
+        // Defer state update to avoid synchronous setState inside effect
+        const id = setTimeout(loadFavorites, 0);
+        return () => clearTimeout(id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const removeFavorite = (id: string) => {
         const updatedFavorites = favorites.filter(item => item._id !== id);
+        setFavorites(updatedFavorites);
+        sessionStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    };
+
+    const changeQuantity = (id: string, delta: number) => {
+        const updatedFavorites = favorites.map(item => {
+            if (item._id === id) {
+                const nextQty = Math.max(1, (item.quantity ?? 1) + delta);
+                return { ...item, quantity: nextQty };
+            }
+            return item;
+        });
         setFavorites(updatedFavorites);
         sessionStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     };
@@ -44,16 +78,40 @@ export default function Favorites() {
             const itemPrice = item.discount
                 ? item.price - (item.price * item.discount) / 100
                 : item.price;
-            text += `${index + 1}. ${item.name}\n`;
-            text += `   Giá: ${formatPrice(itemPrice)}\n\n`;
+            const qty = item.quantity ?? 1;
+            text += `${index + 1}. ${item.name} (SL: ${qty})\n`;
+            text += `   Giá mỗi sản phẩm: ${formatPrice(itemPrice)}\n`;
+            text += `   Thành tiền: ${formatPrice(itemPrice * qty)}\n\n`;
         });
         return text;
     };
 
-    const copyToClipboard = () => {
+    const copyToClipboard = async () => {
         const favoritesList = generateFavoritesList();
-        navigator.clipboard.writeText(favoritesList);
-        toast.success('Đã sao chép danh sách yêu thích!');
+        try {
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                await navigator.clipboard.writeText(favoritesList);
+            } else {
+                // Fallback for some mobile browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = favoritesList;
+                textarea.style.position = 'fixed';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                } finally {
+                    document.body.removeChild(textarea);
+                }
+            }
+            toast.success('Đã sao chép danh sách yêu thích!');
+        } catch {
+            toast.error('Sao chép không thành công. Hãy chọn và sao chép thủ công.');
+        }
     };
 
     return (
@@ -68,7 +126,7 @@ export default function Favorites() {
                     {favorites.length === 0 ? (
                         <div className="empty-cart">
                             <p>Chưa có sản phẩm yêu thích</p>
-                            <a href="/" className="back-to-shop-btn">Khám phá sản phẩm</a>
+                            <Link href="/" className="back-to-shop-btn">Khám phá sản phẩm</Link>
                         </div>
                     ) : (
                         <div className="cart-wrapper">
@@ -92,6 +150,23 @@ export default function Favorites() {
                                             <div className="cart-item-info">
                                                 <h3>{item.name}</h3>
                                                 <p className="cart-item-price">{formatPrice(itemPrice)}</p>
+                                                <div className="cart-item-quantity">
+                                                    <button
+                                                        className="quantity-btn"
+                                                        onClick={() => changeQuantity(item._id, -1)}
+                                                        aria-label="Giảm số lượng"
+                                                    >
+                                                        −
+                                                    </button>
+                                                    <span>{item.quantity ?? 1}</span>
+                                                    <button
+                                                        className="quantity-btn"
+                                                        onClick={() => changeQuantity(item._id, 1)}
+                                                        aria-label="Tăng số lượng"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
                                             </div>
 
                                             <button

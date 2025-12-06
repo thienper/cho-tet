@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     };
 
     return (
-        <div className="product-card">
+        <Link href={`/products/${product._id}`} className="product-card">
             {(product.discount ?? 0) > 0 && (
                 <div className="discount-badge">-{product.discount}%</div>
             )}
@@ -52,10 +52,72 @@ export default function ProductCard({ product }: ProductCardProps) {
                     )}
                 </div>
 
-                <Link href={`/products/${product._id}`} className="view-detail-btn">
+                <span className="view-detail-btn" role="button" tabIndex={0}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.location.href = `/products/${product._id}`;
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            window.location.href = `/products/${product._id}`;
+                        }
+                    }}
+                >
                     🎊 Xem Chi Tiết
-                </Link>
+                </span>
+
+                {/* Quick favorite button */}
+                <span
+                    className="view-detail-btn"
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        try {
+                            if (!product._id) return;
+                            const id = String(product._id);
+                            const favorites: Array<{ _id: string } & Record<string, unknown>> = JSON.parse(sessionStorage.getItem('favorites') || '[]');
+                            const exists = favorites.some((it) => it._id === id);
+                            if (!exists) {
+                                favorites.push({
+                                    _id: id,
+                                    name: product.name,
+                                    price: product.price,
+                                    discount: product.discount,
+                                    images: product.images,
+                                });
+                                sessionStorage.setItem('favorites', JSON.stringify(favorites));
+                            }
+                        } catch { }
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (!product._id) return;
+                            const id = String(product._id);
+                            const favorites: Array<{ _id: string } & Record<string, unknown>> = JSON.parse(sessionStorage.getItem('favorites') || '[]');
+                            const exists = favorites.some((it) => it._id === id);
+                            if (!exists) {
+                                favorites.push({
+                                    _id: id,
+                                    name: product.name,
+                                    price: product.price,
+                                    discount: product.discount,
+                                    images: product.images,
+                                });
+                                sessionStorage.setItem('favorites', JSON.stringify(favorites));
+                            }
+                        }
+                    }}
+                >
+                    ❤️ Thêm Yêu Thích
+                </span>
             </div>
-        </div>
+        </Link>
     );
 }

@@ -262,7 +262,7 @@ body {
 /* Floating Favorites Button */
 .floating-favorites-btn {
     position: fixed;
-    bottom: 30px;
+    bottom: 130px;
     right: 30px;
     width: 60px;
     height: 60px;
@@ -277,11 +277,35 @@ body {
     box-shadow: 0 4px 20px rgba(212, 32, 44, 0.4);
     z-index: 999;
     transition: all 0.3s;
+    animation: favoritesGlow 2.2s ease-in-out infinite;
 }
 
 .floating-favorites-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 30px rgba(212, 32, 44, 0.6);
+    box-shadow: 0 6px 30px rgba(212, 32, 44, 0.8);
+}
+
+@keyframes favoritesGlow {
+    0% {
+        box-shadow:
+            0 4px 20px rgba(212, 32, 44, 0.4),
+            0 0 0 0 rgba(245, 195, 67, 0.0),
+            0 0 0 0 rgba(245, 195, 67, 0.0);
+    }
+
+    50% {
+        box-shadow:
+            0 6px 28px rgba(212, 32, 44, 0.6),
+            0 0 12px 6px rgba(245, 195, 67, 0.35),
+            0 0 24px 12px rgba(245, 195, 67, 0.2);
+    }
+
+    100% {
+        box-shadow:
+            0 4px 20px rgba(212, 32, 44, 0.4),
+            0 0 0 0 rgba(245, 195, 67, 0.0),
+            0 0 0 0 rgba(245, 195, 67, 0.0);
+    }
 }
 
 .favorites-badge {
@@ -1934,6 +1958,35 @@ body {
         max-height: 300px;
     }
 
+    /* Cart: align product and delete button horizontally */
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .cart-item-image img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .cart-item-info {
+        flex: 1;
+    }
+
+    .remove-item-btn {
+        margin-left: auto;
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+
     .suggestion-item {
         padding: 10px 12px;
     }
@@ -3106,4 +3159,23 @@ body {
     font-weight: 600;
     min-width: 120px;
     text-align: center;
+}
+
+/* Mobile adjustments: raise button higher on small screens */
+@media (max-width: 640px) {
+    .floating-favorites-btn {
+        bottom: 150px;
+        /* higher for mobile view */
+        right: 20px;
+    }
+
+    .remove-item-btn {
+        margin-left: auto;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
 }
