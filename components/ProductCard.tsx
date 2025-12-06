@@ -44,8 +44,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <div className="product-price-section">
                     {(product.discount ?? 0) > 0 ? (
                         <>
-                            <span className="product-price-original">{formatPrice(product.price)}</span>
                             <span className="product-price">{formatPrice(discountedPrice)}</span>
+                            <span className="product-price-original">{formatPrice(product.price)}</span>
                         </>
                     ) : (
                         <span className="product-price">{formatPrice(product.price)}</span>

@@ -3178,4 +3178,32 @@ body {
         justify-content: center;
         border-radius: 8px;
     }
+
+    .view-detail-btn {
+        margin-top: 7px;
+    }
+
+    .discount-badge {
+        font-size: 15px;
+    }
+
+    .product-category {
+        font-size: 13px;
+    }
+
+    .product-name {
+        font-size: 15px;
+    }
+
+    .product-price {
+        font-size: 17px;
+    }
+
+    .product-price-original {
+        font-size: 15px;
+    }
+
+    .product-detail-description {
+        padding: 10px;
+    }
 }
