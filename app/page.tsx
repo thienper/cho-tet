@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import { IProduct } from '@/models/Product';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'sonner';
 
 interface Category {
@@ -20,6 +20,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const didInitialLoad = useRef(false);
 
   useEffect(() => {
     fetchCategories();
@@ -33,12 +34,17 @@ export default function Home() {
   useEffect(() => {
     // After products update, scroll to products grid for better UX
     if (!loading) {
-      const el = document.getElementById('products-grid');
+      // Skip scroll on first page load
+      if (!didInitialLoad.current) {
+        didInitialLoad.current = true;
+        return;
+      }
+      const el = document.getElementById('category-filter');
       if (el) {
         const rect = el.getBoundingClientRect();
         const absoluteTop = window.scrollY + rect.top;
         // Adjust for fixed header approximate height
-        const offset = 80;
+        const offset = 10;
         window.scrollTo({ top: Math.max(absoluteTop - offset, 0), behavior: 'smooth' });
       }
     }
@@ -96,7 +102,7 @@ export default function Home() {
 
         <div className="container">
           {/* Category Filter */}
-          <div className="category-filter">
+          <div className="category-filter" id='category-filter'>
             <button
               className={`category-btn ${!selectedCategory ? 'active' : ''}`}
               onClick={() => handleCategoryChange('')}
