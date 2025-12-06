@@ -186,16 +186,16 @@ export default function ProductDetail() {
                             <div className="contact-seller">
                                 <h3>Liên hệ người bán:</h3>
                                 <div className="contact-buttons">
-                                    <a href="tel:0123456789" className="contact-btn phone">
+                                    <a href="tel:0974122850" className="contact-btn phone">
                                         <FaPhone /> Điện thoại
                                     </a>
-                                    <a href="https://zalo.me/0123456789" target="_blank" rel="noopener noreferrer" className="contact-btn zalo">
+                                    <a href="http://zaloapp.com/qr/p/kuhf5gyvg7sw" target="_blank" rel="noopener noreferrer" className="contact-btn zalo">
                                         <SiZalo /> Zalo
                                     </a>
-                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="contact-btn facebook">
+                                    <a href="https://www.facebook.com/thienperr" target="_blank" rel="noopener noreferrer" className="contact-btn facebook">
                                         <FaFacebook /> Facebook
                                     </a>
-                                    <a href="https://m.me/username" target="_blank" rel="noopener noreferrer" className="contact-btn messenger">
+                                    <a href="https://m.me/thienperr" target="_blank" rel="noopener noreferrer" className="contact-btn messenger">
                                         <SiMessenger /> Messenger
                                     </a>
                                 </div>

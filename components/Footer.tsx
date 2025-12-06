@@ -21,13 +21,13 @@ export default function Footer() {
                         <h3 className="footer-title">Liên Hệ</h3>
                         <ul className="footer-links">
                             <li>
-                                <FaPhone /> Hotline: 0123 456 789
+                                <FaPhone /> Hotline: 0974122850
                             </li>
                             <li>
-                                <FaEnvelope /> Email: tetmarket@example.com
+                                <FaEnvelope /> Email: thienper@gmail.com
                             </li>
                             <li>
-                                <FaMapMarkerAlt /> Địa chỉ: 123 Đường Xuân, Hà Nội
+                                <FaMapMarkerAlt /> Địa chỉ: 497 Phan Văn Trị, Gò Vấp
                             </li>
                         </ul>
                     </div>
@@ -35,10 +35,10 @@ export default function Footer() {
                     <div className="footer-section">
                         <h3 className="footer-title">Kết Nối Với Chúng Tôi</h3>
                         <div className="social-links">
-                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-btn facebook">
+                            <a href="https://www.facebook.com/thienperr" target="_blank" rel="noopener noreferrer" className="social-btn facebook">
                                 <FaFacebook /> Facebook
                             </a>
-                            <a href="https://zalo.me" target="_blank" rel="noopener noreferrer" className="social-btn zalo">
+                            <a href="http://zaloapp.com/qr/p/kuhf5gyvg7sw" target="_blank" rel="noopener noreferrer" className="social-btn zalo">
                                 <SiZalo /> Zalo
                             </a>
                         </div>
