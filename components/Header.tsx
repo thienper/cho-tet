@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { FaHeart, FaSearch } from 'react-icons/fa';
 
@@ -24,10 +25,12 @@ interface Product {
 }
 
 export default function Header() {
+    const pathname = usePathname();
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState<Product[]>([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [favoritesCount, setFavoritesCount] = useState(0);
     const searchRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -39,6 +42,30 @@ export default function Header() {
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        const computeCount = () => {
+            try {
+                const raw = sessionStorage.getItem('favorites') || '[]';
+                const arr: Array<{ quantity?: number }> = JSON.parse(raw);
+                const total = arr.length;
+                setFavoritesCount(total);
+            } catch {
+                setFavoritesCount(0);
+            }
+        };
+        computeCount();
+        const onStorage = (e: StorageEvent) => {
+            if (e.key === 'favorites') computeCount();
+        };
+        const onCustom = () => computeCount();
+        window.addEventListener('storage', onStorage);
+        window.addEventListener('favorites-updated', onCustom as EventListener);
+        return () => {
+            window.removeEventListener('storage', onStorage);
+            window.removeEventListener('favorites-updated', onCustom as EventListener);
+        };
     }, []);
 
     useEffect(() => {
@@ -156,9 +183,14 @@ export default function Header() {
                 </div>
             </div>
 
-            <Link href="/cart" className="floating-favorites-btn" title="Danh sách yêu thích">
-                <FaHeart />
-            </Link>
+            {pathname !== '/cart' && (
+                <Link href="/cart" className="floating-favorites-btn" title="Danh sách yêu thích">
+                    <FaHeart />
+                    {favoritesCount > 0 && (
+                        <span className="favorites-badge">{favoritesCount}</span>
+                    )}
+                </Link>
+            )}
         </header>
     );
 }

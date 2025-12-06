@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import { IProduct } from '@/models/Product';
 import { useEffect, useState } from 'react';
+import { Toaster } from 'sonner';
 
 interface Category {
   _id: string;
@@ -28,6 +29,20 @@ export default function Home() {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, currentPage]);
+
+  useEffect(() => {
+    // After products update, scroll to products grid for better UX
+    if (!loading) {
+      const el = document.getElementById('products-grid');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const absoluteTop = window.scrollY + rect.top;
+        // Adjust for fixed header approximate height
+        const offset = 80;
+        window.scrollTo({ top: Math.max(absoluteTop - offset, 0), behavior: 'smooth' });
+      }
+    }
+  }, [selectedCategory, currentPage, loading]);
 
   const fetchCategories = async () => {
     try {
@@ -68,6 +83,7 @@ export default function Home() {
 
   return (
     <>
+      <Toaster position="top-right" richColors />
       <Header />
 
       <main className="main-content">
@@ -107,7 +123,7 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <div className="products-grid">
+              <div className="products-grid" id="products-grid">
                 {products.map((product) => (
                   <ProductCard
                     key={product._id}

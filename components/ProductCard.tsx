@@ -3,6 +3,7 @@
 import { IProduct } from '@/models/Product';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 interface ProductCardProps {
     product: IProduct & { category?: { name: string } | string };
@@ -80,18 +81,25 @@ export default function ProductCard({ product }: ProductCardProps) {
                         try {
                             if (!product._id) return;
                             const id = String(product._id);
-                            const favorites: Array<{ _id: string } & Record<string, unknown>> = JSON.parse(sessionStorage.getItem('favorites') || '[]');
-                            const exists = favorites.some((it) => it._id === id);
-                            if (!exists) {
+                            const favorites: Array<{ _id: string; quantity?: number } & Record<string, unknown>> = JSON.parse(sessionStorage.getItem('favorites') || '[]');
+                            const idx = favorites.findIndex((it) => it._id === id);
+                            if (idx === -1) {
                                 favorites.push({
                                     _id: id,
                                     name: product.name,
                                     price: product.price,
                                     discount: product.discount,
                                     images: product.images,
+                                    quantity: 1,
                                 });
-                                sessionStorage.setItem('favorites', JSON.stringify(favorites));
+                                toast.success('Đã thêm vào yêu thích');
+                            } else {
+                                const currentQty = Number(favorites[idx].quantity ?? 1);
+                                favorites[idx].quantity = currentQty + 1;
+                                toast.success('Đã tăng số lượng trong yêu thích');
                             }
+                            sessionStorage.setItem('favorites', JSON.stringify(favorites));
+                            window.dispatchEvent(new Event('favorites-updated'));
                         } catch { }
                     }}
                     onKeyDown={(e) => {
@@ -100,18 +108,25 @@ export default function ProductCard({ product }: ProductCardProps) {
                             e.stopPropagation();
                             if (!product._id) return;
                             const id = String(product._id);
-                            const favorites: Array<{ _id: string } & Record<string, unknown>> = JSON.parse(sessionStorage.getItem('favorites') || '[]');
-                            const exists = favorites.some((it) => it._id === id);
-                            if (!exists) {
+                            const favorites: Array<{ _id: string; quantity?: number } & Record<string, unknown>> = JSON.parse(sessionStorage.getItem('favorites') || '[]');
+                            const idx = favorites.findIndex((it) => it._id === id);
+                            if (idx === -1) {
                                 favorites.push({
                                     _id: id,
                                     name: product.name,
                                     price: product.price,
                                     discount: product.discount,
                                     images: product.images,
+                                    quantity: 1,
                                 });
-                                sessionStorage.setItem('favorites', JSON.stringify(favorites));
+                                toast.success('Đã thêm vào yêu thích');
+                            } else {
+                                const currentQty = Number(favorites[idx].quantity ?? 1);
+                                favorites[idx].quantity = currentQty + 1;
+                                toast.success('Đã tăng số lượng trong yêu thích');
                             }
+                            sessionStorage.setItem('favorites', JSON.stringify(favorites));
+                            window.dispatchEvent(new Event('favorites-updated'));
                         }
                     }}
                 >

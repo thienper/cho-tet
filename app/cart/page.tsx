@@ -46,6 +46,7 @@ export default function Favorites() {
         const updatedFavorites = favorites.filter(item => item._id !== id);
         setFavorites(updatedFavorites);
         sessionStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        window.dispatchEvent(new Event('favorites-updated'));
     };
 
     const changeQuantity = (id: string, delta: number) => {
@@ -58,11 +59,13 @@ export default function Favorites() {
         });
         setFavorites(updatedFavorites);
         sessionStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        window.dispatchEvent(new Event('favorites-updated'));
     };
 
     const clearFavorites = () => {
         setFavorites([]);
         sessionStorage.removeItem('favorites');
+        window.dispatchEvent(new Event('favorites-updated'));
     };
 
     const formatPrice = (price: number) => {
