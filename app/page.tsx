@@ -52,7 +52,7 @@ export default function Home() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('/api/categories');
+      const res = await fetch('/api/categories', { cache: 'no-store' });
       const data = await res.json();
       if (data.success) {
         setCategories(data.data);
@@ -69,7 +69,7 @@ export default function Home() {
       if (selectedCategory) {
         url += `&category=${selectedCategory}`;
       }
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: 'no-store' });
       const data = await res.json();
       if (data.success) {
         setProducts(data.data);
