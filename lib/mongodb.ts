@@ -12,17 +12,24 @@ if (!cached) {
     cached = global.mongoose = { conn: null, promise: null };
 }
 
+// Optimized connection pool for Vercel serverless
+const mongooseOpts = {
+    maxPoolSize: 10,
+    minPoolSize: 2,
+    serverSelectionTimeoutMS: 15000,
+    connectTimeoutMS: 15000,
+    socketTimeoutMS: 45000,
+    bufferCommands: false,
+    family: 4, // IPv4
+};
+
 async function connectDB() {
     if (cached.conn) {
         return cached.conn;
     }
 
     if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-        };
-
-        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+        cached.promise = mongoose.connect(MONGODB_URI, mongooseOpts).then((mongoose) => {
             return mongoose;
         });
     }

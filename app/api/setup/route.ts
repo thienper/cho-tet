@@ -1,19 +1,6 @@
+import connectDB from '@/lib/mongodb';
 import User from '@/models/User';
-import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
-
-const MONGODB_URI = process.env.MONGODB_URI!;
-
-if (!MONGODB_URI) {
-    throw new Error('MONGODB_URI environment variable is not defined');
-}
-
-async function connectDB() {
-    if (mongoose.connection.readyState === 1) {
-        return;
-    }
-    await mongoose.connect(MONGODB_URI);
-}
 
 export async function POST() {
     try {
